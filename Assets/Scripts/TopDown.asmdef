@@ -1,0 +1,19 @@
+{
+    "name": "TopDown",
+    "rootNamespace": "TopDown",
+    "references": [
+        "Cinemachine",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "Zenject"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
