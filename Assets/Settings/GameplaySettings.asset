@@ -9,6 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -645759843, guid: a4865f1ab4504ed8a368670db22f409c, type: 3}
-  m_Name: GeneralDrawerConfig
+  m_Script: {fileID: 11500000, guid: 66f280433db954648afafa1cf6f54557, type: 3}
+  m_Name: GameplaySettings
   m_EditorClassIdentifier: 
+  _playerSettings:
+    Movement:
+      MaxSpeed: 10
+      Acceleration: 20
