@@ -6,11 +6,10 @@ using Zenject;
 
 namespace TopDown.Gameplay.Player
 {
-    public class PlayerController : MonoBehaviour,
-		InputActions.IGameplayActions
+    public class PlayerController : MonoBehaviour
     {
-        private CharacterMotor _motor;
-		private InputActions _input;
+        protected CharacterMotor _motor;
+		protected InputActions _input;
 
         [Inject]
 		public void Construct( GameplaySettings.PlayerSettings settings,
@@ -19,26 +18,29 @@ namespace TopDown.Gameplay.Player
             _motor = new CharacterMotor( body, settings.Movement );
 
 			_input = new InputActions();
-			_input.Gameplay.SetCallbacks( this );
 			_input.Enable();
+
+			Construct();
 		}
 
-		private void OnDestroy()
+		protected virtual void Construct()
+		{
+
+		}
+
+		protected virtual void OnDestroy()
 		{
 			_input.Dispose();
 		}
 
-		public void OnHorizontal( InputAction.CallbackContext context )
-		{
-			_motor.SetDesiredVelocity( new Vector2()
-			{
-				x = context.ReadValue<float>()
-			} );
-		}
-
-		private void FixedUpdate()
+		protected virtual void FixedUpdate()
 		{
 			_motor.FixedTick();
+		}
+
+		protected virtual void Start()
+		{
+
 		}
 	}
 }
