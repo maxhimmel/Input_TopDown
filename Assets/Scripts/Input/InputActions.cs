@@ -21,9 +21,9 @@ namespace TopDown.Input
             ""id"": ""43614efc-a6e4-4a32-b409-4f22fbec977f"",
             ""actions"": [
                 {
-                    ""name"": ""Horizontal"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""3ec138b7-6a37-45b6-88e9-8cb67c477b3f"",
+                    ""id"": ""8eedf0ec-33eb-464c-a99f-f2845e4a5fc1"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -31,91 +31,68 @@ namespace TopDown.Input
             ],
             ""bindings"": [
                 {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""2aec11db-6013-437b-8a13-0061999f3e88"",
-                    ""path"": ""1DAxis"",
+                    ""name"": ""2D Vector - Gamepad"",
+                    ""id"": ""6fea1b22-18f4-49e8-899f-c7e4b25139d5"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Horizontal"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""6f91840e-42f9-431c-860e-5e32926cdf2f"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""name"": ""up"",
+                    ""id"": ""96adf6e1-bc8c-4441-a537-06a066f87197"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardScheme"",
-                    ""action"": ""Horizontal"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""98c1b170-7b4e-4e95-b0ce-98ed00e672d9"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""name"": ""down"",
+                    ""id"": ""9a3b5b1d-107c-4104-8791-e0f75adc8f05"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardScheme"",
-                    ""action"": ""Horizontal"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""2a5d5ff7-3392-47d1-a6aa-5c06af3f18c5"",
-                    ""path"": ""1DAxis"",
+                    ""name"": ""left"",
+                    ""id"": ""4d5c952a-36a2-4507-9eb5-9b7f15e176b3"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardScheme"",
-                    ""action"": ""Horizontal"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""4348b8cd-cc81-4636-9b10-177121262ef1"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardScheme"",
-                    ""action"": ""Horizontal"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""1eecebd4-ae19-475b-8569-62a29f917cf9"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""name"": ""right"",
+                    ""id"": ""58aa58d1-90d1-4f11-9c2e-63093f93af2f"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardScheme"",
-                    ""action"": ""Horizontal"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
             ]
         }
     ],
-    ""controlSchemes"": [
-        {
-            ""name"": ""KeyboardScheme"",
-            ""bindingGroup"": ""KeyboardScheme"",
-            ""devices"": [
-                {
-                    ""devicePath"": ""<Keyboard>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
-        }
-    ]
+    ""controlSchemes"": []
 }");
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-            m_Gameplay_Horizontal = m_Gameplay.FindAction("Horizontal", throwIfNotFound: true);
+            m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -165,12 +142,12 @@ namespace TopDown.Input
         // Gameplay
         private readonly InputActionMap m_Gameplay;
         private IGameplayActions m_GameplayActionsCallbackInterface;
-        private readonly InputAction m_Gameplay_Horizontal;
+        private readonly InputAction m_Gameplay_Move;
         public struct GameplayActions
         {
             private @InputActions m_Wrapper;
             public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Horizontal => m_Wrapper.m_Gameplay_Horizontal;
+            public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -180,32 +157,23 @@ namespace TopDown.Input
             {
                 if (m_Wrapper.m_GameplayActionsCallbackInterface != null)
                 {
-                    @Horizontal.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHorizontal;
-                    @Horizontal.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHorizontal;
-                    @Horizontal.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHorizontal;
+                    @Move.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
                 }
                 m_Wrapper.m_GameplayActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Horizontal.started += instance.OnHorizontal;
-                    @Horizontal.performed += instance.OnHorizontal;
-                    @Horizontal.canceled += instance.OnHorizontal;
+                    @Move.started += instance.OnMove;
+                    @Move.performed += instance.OnMove;
+                    @Move.canceled += instance.OnMove;
                 }
             }
         }
         public GameplayActions @Gameplay => new GameplayActions(this);
-        private int m_KeyboardSchemeSchemeIndex = -1;
-        public InputControlScheme KeyboardSchemeScheme
-        {
-            get
-            {
-                if (m_KeyboardSchemeSchemeIndex == -1) m_KeyboardSchemeSchemeIndex = asset.FindControlSchemeIndex("KeyboardScheme");
-                return asset.controlSchemes[m_KeyboardSchemeSchemeIndex];
-            }
-        }
         public interface IGameplayActions
         {
-            void OnHorizontal(InputAction.CallbackContext context);
+            void OnMove(InputAction.CallbackContext context);
         }
     }
 }
