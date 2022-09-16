@@ -10,14 +10,17 @@ namespace TopDown.Gameplay.Player
     {
         protected CharacterMotor _motor;
 		protected InputActions _input;
+		protected GameplaySettings.PlayerSettings _settings;
 
         [Inject]
 		public void Construct( GameplaySettings.PlayerSettings settings,
+			InputActions input,
             Rigidbody2D body )
 		{
+			_settings = settings;
             _motor = new CharacterMotor( body, settings.Movement );
 
-			_input = new InputActions();
+			_input = input;
 			_input.Enable();
 
 			Construct();
