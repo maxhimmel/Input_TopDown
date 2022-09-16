@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GameplaySettings
   m_EditorClassIdentifier: 
   _playerSettings:
+    TurnSpeed: 720
     Movement:
       MaxSpeed: 10
       Acceleration: 50

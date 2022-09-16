@@ -12,6 +12,7 @@ namespace TopDown.Gameplay
         [System.Serializable]
 		public class PlayerSettings
 		{
+			public float TurnSpeed;
             public CharacterMotor.Settings Movement;
 		}
 
