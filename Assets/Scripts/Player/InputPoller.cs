@@ -23,7 +23,10 @@ namespace TopDown.Gameplay.Player
             var aimInput = _input.Gameplay.Aim.ReadValue<Vector2>();
             if (aimInput != Vector2.zero)
             {
-                transform.rotation = Quaternion.LookRotation(Vector3.forward, aimInput);
+                var desiredFacing = Quaternion.LookRotation(Vector3.forward, aimInput);
+                var facingSpeed = (_settings.TurnSpeed) * Time.deltaTime;
+
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredFacing, facingSpeed);
             }
         }
     }
