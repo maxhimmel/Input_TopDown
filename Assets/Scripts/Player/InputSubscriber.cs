@@ -21,5 +21,14 @@ namespace TopDown.Gameplay.Player
 
 			_motor.SetDesiredVelocity( rawInput );
 		}
-	}
+
+        public void OnAim(InputAction.CallbackContext context)
+        {
+			var rawInput = context.ReadValue<Vector2>();
+			if (rawInput != Vector2.zero)
+			{
+				transform.rotation = Quaternion.LookRotation(Vector3.forward, rawInput);
+			}
+        }
+    }
 }
