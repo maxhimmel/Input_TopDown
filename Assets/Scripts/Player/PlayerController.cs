@@ -17,13 +17,16 @@ namespace TopDown.Gameplay.Player
 		protected bool _isPaused;
 
 		private bool _prevPauseState;
+		private PauseController _pauseController;
 
-        [Inject]
+		[Inject]
 		public void Construct( GameplaySettings.PlayerSettings settings,
 			InputActions input,
-            Rigidbody2D body )
+            Rigidbody2D body,
+			PauseController pauseController )
 		{
 			_settings = settings;
+			_pauseController = pauseController;
             _motor = new CharacterMotor( body, settings.Movement );
 
 			_input = input;
@@ -53,17 +56,13 @@ namespace TopDown.Gameplay.Player
         {
 			if (_prevPauseState != _isPaused)
             {
-				Debug.LogWarning($"Paused? | {_isPaused}");
-
                 if (_isPaused)
 				{
-					_input.Gameplay.Disable();
-					_input.UI.Enable();
+					_pauseController.Pause();
 				}
 				else
 				{
-					_input.UI.Disable();
-					_input.Gameplay.Enable();
+					_pauseController.Resume();
 				}
 
 				_prevPauseState = _isPaused;
