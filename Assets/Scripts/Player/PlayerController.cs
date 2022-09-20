@@ -9,7 +9,7 @@ namespace TopDown.Gameplay.Player
     public class PlayerController : MonoBehaviour
     {
         protected CharacterMotor _motor;
-		protected InputActions _input;
+		protected TopDownInput _input;
 		protected GameplaySettings.PlayerSettings _settings;
 
 		protected Vector2 _moveInput;
@@ -21,7 +21,7 @@ namespace TopDown.Gameplay.Player
 
 		[Inject]
 		public void Construct( GameplaySettings.PlayerSettings settings,
-			InputActions input,
+			TopDownInput input,
             Rigidbody2D body,
 			PauseController pauseController )
 		{

@@ -8,7 +8,7 @@ namespace TopDown.Installer
     {
         public override void InstallBindings()
         {
-            Container.Bind<InputActions>().AsSingle();
+            Container.Bind<TopDownInput>().AsSingle();
             Container.Bind<PauseController>().AsSingle();
         }
     }

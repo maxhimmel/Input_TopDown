@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 namespace TopDown.Gameplay.Player
 {
     public class InputSubscriber : PlayerController,
-		InputActions.IGameplayActions,
-		InputActions.IUIActions
+		TopDownInput.IGameplayActions,
+		TopDownInput.IUIActions
     {
 		protected override void Construct()
 		{

@@ -7,11 +7,11 @@ namespace TopDown.Gameplay
     {
         public bool IsPaused { get; private set; }
 
-        private readonly InputActions _input;
+        private readonly TopDownInput _input;
 
         private float _prevTimeScale = 1;
 
-        public PauseController(InputActions input)
+        public PauseController(TopDownInput input)
         {
             _input = input;
         }

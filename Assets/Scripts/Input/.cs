@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Settings/InputActions.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Settings/TopDownInput.inputactions'
 
 using System;
 using System.Collections;
@@ -8,13 +8,13 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace TopDown.Input
 {
-    public class @InputActions : IInputActionCollection, IDisposable
+    public class @TopDownInput : IInputActionCollection, IDisposable
     {
         public InputActionAsset asset { get; }
-        public @InputActions()
+        public @TopDownInput()
         {
             asset = InputActionAsset.FromJson(@"{
-    ""name"": ""InputActions"",
+    ""name"": ""TopDownInput"",
     ""maps"": [
         {
             ""name"": ""Gameplay"",
@@ -301,8 +301,8 @@ namespace TopDown.Input
         private readonly InputAction m_Gameplay_Pause;
         public struct GameplayActions
         {
-            private @InputActions m_Wrapper;
-            public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            private @TopDownInput m_Wrapper;
+            public GameplayActions(@TopDownInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputAction @Aim => m_Wrapper.m_Gameplay_Aim;
             public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
@@ -350,8 +350,8 @@ namespace TopDown.Input
         private readonly InputAction m_UI_Cancel;
         public struct UIActions
         {
-            private @InputActions m_Wrapper;
-            public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            private @TopDownInput m_Wrapper;
+            public UIActions(@TopDownInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Resume => m_Wrapper.m_UI_Resume;
             public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
             public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
