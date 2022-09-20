@@ -17,7 +17,8 @@ namespace TopDown.Gameplay.Player
         private void PollPausing()
         {
             // This will throw an exception if trying to read these pause/resume buttons as a <bool>.
-                // Probably a good reason to NOT use this polling method and instead use the callback/subscription flow.
+                // Probably a good reason to NOT use this polling method and instead use the callback/subscription flow
+                /// shown in the <see cref="InputSubscriber"/>.
 
             if (_input.Gameplay.enabled)
             {
