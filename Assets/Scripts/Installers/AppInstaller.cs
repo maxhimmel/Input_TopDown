@@ -1,3 +1,4 @@
+using TopDown.Gameplay;
 using TopDown.Input;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace TopDown.Installer
         public override void InstallBindings()
         {
             Container.Bind<InputActions>().AsSingle();
+            Container.Bind<PauseController>().AsSingle();
         }
     }
 }
