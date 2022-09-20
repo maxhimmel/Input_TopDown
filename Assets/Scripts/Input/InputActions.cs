@@ -35,6 +35,14 @@ namespace TopDown.Input
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""753ca03f-57ec-4da7-8d71-ea99dcf93c74"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -147,6 +155,82 @@ namespace TopDown.Input
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39004ce5-2f29-464a-8551-fc2d50b9be44"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""b720ac79-ef4b-4743-bcbb-34e8ba91c09f"",
+            ""actions"": [
+                {
+                    ""name"": ""Resume"",
+                    ""type"": ""Button"",
+                    ""id"": ""b1ba8723-70a8-4cfa-97b9-22eb31579365"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""595eccb7-c266-486e-b127-1de5b7e142ed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c0f2f70-87e9-49ea-a526-6198e78e9562"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6577d399-983c-487f-9464-c2b67bc61008"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Resume"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""616cfd2c-6fb6-4a90-bfac-1e9b8c39b988"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b6a6b38-e013-44ca-a9ce-737584ee054d"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -157,6 +241,12 @@ namespace TopDown.Input
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_Aim = m_Gameplay.FindAction("Aim", throwIfNotFound: true);
+            m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+            // UI
+            m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+            m_UI_Resume = m_UI.FindAction("Resume", throwIfNotFound: true);
+            m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
+            m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -208,12 +298,14 @@ namespace TopDown.Input
         private IGameplayActions m_GameplayActionsCallbackInterface;
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_Aim;
+        private readonly InputAction m_Gameplay_Pause;
         public struct GameplayActions
         {
             private @InputActions m_Wrapper;
             public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputAction @Aim => m_Wrapper.m_Gameplay_Aim;
+            public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -229,6 +321,9 @@ namespace TopDown.Input
                     @Aim.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAim;
                     @Aim.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAim;
                     @Aim.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAim;
+                    @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                    @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                    @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                 }
                 m_Wrapper.m_GameplayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -239,14 +334,73 @@ namespace TopDown.Input
                     @Aim.started += instance.OnAim;
                     @Aim.performed += instance.OnAim;
                     @Aim.canceled += instance.OnAim;
+                    @Pause.started += instance.OnPause;
+                    @Pause.performed += instance.OnPause;
+                    @Pause.canceled += instance.OnPause;
                 }
             }
         }
         public GameplayActions @Gameplay => new GameplayActions(this);
+
+        // UI
+        private readonly InputActionMap m_UI;
+        private IUIActions m_UIActionsCallbackInterface;
+        private readonly InputAction m_UI_Resume;
+        private readonly InputAction m_UI_Confirm;
+        private readonly InputAction m_UI_Cancel;
+        public struct UIActions
+        {
+            private @InputActions m_Wrapper;
+            public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Resume => m_Wrapper.m_UI_Resume;
+            public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
+            public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
+            public InputActionMap Get() { return m_Wrapper.m_UI; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+            public void SetCallbacks(IUIActions instance)
+            {
+                if (m_Wrapper.m_UIActionsCallbackInterface != null)
+                {
+                    @Resume.started -= m_Wrapper.m_UIActionsCallbackInterface.OnResume;
+                    @Resume.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnResume;
+                    @Resume.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnResume;
+                    @Confirm.started -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
+                    @Confirm.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
+                    @Confirm.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnConfirm;
+                    @Cancel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
+                    @Cancel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
+                    @Cancel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
+                }
+                m_Wrapper.m_UIActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Resume.started += instance.OnResume;
+                    @Resume.performed += instance.OnResume;
+                    @Resume.canceled += instance.OnResume;
+                    @Confirm.started += instance.OnConfirm;
+                    @Confirm.performed += instance.OnConfirm;
+                    @Confirm.canceled += instance.OnConfirm;
+                    @Cancel.started += instance.OnCancel;
+                    @Cancel.performed += instance.OnCancel;
+                    @Cancel.canceled += instance.OnCancel;
+                }
+            }
+        }
+        public UIActions @UI => new UIActions(this);
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
             void OnAim(InputAction.CallbackContext context);
+            void OnPause(InputAction.CallbackContext context);
+        }
+        public interface IUIActions
+        {
+            void OnResume(InputAction.CallbackContext context);
+            void OnConfirm(InputAction.CallbackContext context);
+            void OnCancel(InputAction.CallbackContext context);
         }
     }
 }
