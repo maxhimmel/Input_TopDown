@@ -12,6 +12,12 @@ namespace TopDown.Gameplay.Player
 		protected InputActions _input;
 		protected GameplaySettings.PlayerSettings _settings;
 
+		protected Vector2 _moveInput;
+		protected Vector2 _aimInput;
+		protected bool _isPaused;
+
+		private bool _prevPauseState;
+
         [Inject]
 		public void Construct( GameplaySettings.PlayerSettings settings,
 			InputActions input,
@@ -35,6 +41,50 @@ namespace TopDown.Gameplay.Player
 		{
 			_input.Dispose();
 		}
+
+		protected virtual void Update()
+        {
+			HandlePause();
+			HandleMovement();
+			HandleAiming();
+        }
+
+		private void HandlePause()
+        {
+			if (_prevPauseState != _isPaused)
+            {
+				Debug.LogWarning($"Paused? | {_isPaused}");
+
+                if (_isPaused)
+				{
+					_input.Gameplay.Disable();
+					_input.UI.Enable();
+				}
+				else
+				{
+					_input.UI.Disable();
+					_input.Gameplay.Enable();
+				}
+
+				_prevPauseState = _isPaused;
+			}
+        }
+
+		private void HandleMovement()
+		{
+			_motor.SetDesiredVelocity(_moveInput);
+		}
+
+		private void HandleAiming()
+		{
+			if (_aimInput != Vector2.zero)
+			{
+				var desiredFacing = Quaternion.LookRotation(Vector3.forward, _aimInput);
+				var facingSpeed = (_settings.TurnSpeed) * Time.deltaTime;
+
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredFacing, facingSpeed);
+			}
+        }
 
 		protected virtual void FixedUpdate()
 		{
